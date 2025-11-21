@@ -1,0 +1,22 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "{F92090A4-43FA-E4DF-B36B-AD8C8FC06435}",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "TopDown_RPG_GAS",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "ModelingToolsEditorMode",
+			"Enabled": true,
+			"TargetAllowList": [
+				"Editor"
+			]
+		}
+	]
+}

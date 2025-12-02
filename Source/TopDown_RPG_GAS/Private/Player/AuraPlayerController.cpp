@@ -5,12 +5,76 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-
+#include "Interaction/EnemyInterface.h"
 
 
 AAuraPlayerController::AAuraPlayerController()
 {
 	bReplicates = true;
+}
+
+void AAuraPlayerController::PlayerTick(float DeltaTime)
+{
+	Super::PlayerTick(DeltaTime);
+
+	CursorTrace();
+}
+
+void AAuraPlayerController::CursorTrace()
+{
+	FHitResult CursorHit;
+	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
+	if (!CursorHit.bBlockingHit) return;
+
+	LastEnemy = CurrentEnemy;
+	CurrentEnemy = Cast<IEnemyInterface>(CursorHit.GetActor());
+
+	/*
+	 * Line trace from cursor. There are several scenarios:
+	 * A. LastEnemy is NULL && CurrentEnemy is NULL
+	 *		- Do nothing
+	 * B. LastEnemy is NULL && CurrentEnemy is Valid
+	 * 		- Highlight CurrentEnemy
+	 * C. LastEnemy is Valid && CurrentEnemy is NULL
+	 * 		- Unhighlight LastEnemy
+	 * D. Both are valid, but LastEnemy != CurrentEnemy
+	 * 		- Unhighlight LastEnemy, and Highlight CurrentEnemy
+	 * E. Both are valid, but LastEnemy == CurrentEnemy
+	 * 		- Do nothing
+	 */
+	if (LastEnemy == nullptr)
+	{
+		if (CurrentEnemy != nullptr)
+		{
+			// Case B
+			CurrentEnemy->Highlight();
+		}
+		else
+		{
+			// Case A, do nothing
+		}
+	}
+	else
+	{
+		if (CurrentEnemy == nullptr)
+		{
+			// Case C
+			LastEnemy->UnHighlight();
+		}
+		else
+		{
+			if (LastEnemy != CurrentEnemy)
+			{
+				// Case D
+				LastEnemy->UnHighlight();
+				CurrentEnemy->Highlight();
+			}
+			else
+			{
+				// Case E, do nothing
+			}
+		}
+	}
 }
 
 void AAuraPlayerController::BeginPlay()

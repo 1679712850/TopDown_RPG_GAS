@@ -15,4 +15,7 @@ class TOPDOWN_RPG_GAS_API AAuraEnemy : public AAuraCharacterBase, public IEnemyI
 public:
 	virtual void Highlight() override;
 	virtual void UnHighlight() override;
+
+	UPROPERTY(BlueprintReadOnly, Category="Enemy")
+	bool bHighlighted = false;
 };

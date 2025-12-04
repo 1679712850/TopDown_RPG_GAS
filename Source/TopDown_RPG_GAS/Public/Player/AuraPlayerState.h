@@ -18,6 +18,7 @@ class TOPDOWN_RPG_GAS_API AAuraPlayerState : public APlayerState, public IAbilit
 public:
 	AAuraPlayerState();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
 protected:
 	UPROPERTY()

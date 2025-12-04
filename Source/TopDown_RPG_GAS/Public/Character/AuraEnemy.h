@@ -14,6 +14,12 @@ class TOPDOWN_RPG_GAS_API AAuraEnemy : public AAuraCharacterBase, public IEnemyI
 
 public:
 	AAuraEnemy();
+
+	/* Enemy Interface */
 	virtual void Highlight() override;
 	virtual void UnHighlight() override;
+	/* end Enemy Interface */
+	
+protected:
+	virtual void BeginPlay() override;
 };

@@ -6,6 +6,7 @@
 #include "AuraWidgetController.h"
 #include "OverlayWidgetController.generated.h"
 
+struct FOnAttributeChangeData;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChangedSignature, float, NewHealth);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxHealthChangedSignature, float, NewMaxHealth);
 
@@ -19,11 +20,15 @@ class TOPDOWN_RPG_GAS_API UOverlayWidgetController : public UAuraWidgetControlle
 
 public:
 	virtual void BroadcastInitValues() override;
+	virtual void BindCallbacksToDependencies() override;
 	
 	UPROPERTY(BlueprintAssignable, Category="Aura|Attributes")
 	FOnHealthChangedSignature OnHealthChanged;
 
 	UPROPERTY(BlueprintAssignable, Category="Aura|Attributes")
 	FOnMaxHealthChangedSignature OnMaxMaxHealthChanged;
-	
+
+protected:
+	void HealthChanged(const FOnAttributeChangeData& Data);
+	void MaxHealthChanged(const FOnAttributeChangeData& Data);
 };

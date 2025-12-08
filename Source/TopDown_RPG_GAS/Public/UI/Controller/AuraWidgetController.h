@@ -48,6 +48,7 @@ class TOPDOWN_RPG_GAS_API UAuraWidgetController : public UObject
 public:
 	void SetWidgetControllerParams(const FWidgetControllerParams& Params);
 	virtual void BroadcastInitValues();
+	virtual void BindCallbacksToDependencies();
 protected:
 	UPROPERTY(BlueprintReadOnly, Category="WidgetController")
 	TObjectPtr<APlayerController> PlayerController;

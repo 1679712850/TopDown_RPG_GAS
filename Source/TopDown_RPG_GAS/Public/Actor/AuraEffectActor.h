@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "AuraEffectActor.generated.h"
 
+class UGameplayEffect;
 class USphereComponent;
 
 UCLASS()
@@ -16,21 +17,9 @@ class TOPDOWN_RPG_GAS_API AAuraEffectActor : public AActor
 public:
 	AAuraEffectActor();
 
-	UFUNCTION()
-	void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-	               int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UFUNCTION(BlueprintCallable)
+	void ApplyEffectTo(AActor* TargetActor,TSubclassOf<UGameplayEffect> GameplayEffectClass);
 
-	UFUNCTION()
-	void OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-	                  int32 OtherBodyIndex);
-	
-protected:
-	virtual void BeginPlay() override;
-
-private:
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UStaticMeshComponent> MeshComponent;
-
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USphereComponent> SphereComponent;
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Applied Effect" )
+	TSubclassOf<UGameplayEffect> InstantGameplayEffectClass;
 };

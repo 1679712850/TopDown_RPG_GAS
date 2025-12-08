@@ -4,49 +4,24 @@
 #include "Actor/AuraEffectActor.h"
 
 #include "AbilitySystemComponent.h"
-#include "AbilitySystemInterface.h"
-#include "AbilitySystem/AuraAttributeSet.h"
-#include "Components/SphereComponent.h"
+#include "AbilitySystemGlobals.h"
 
 
 class UAttributeSet;
 
 AAuraEffectActor::AAuraEffectActor()
 {
-	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
-	SetRootComponent(MeshComponent);
-
-	SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComponent"));
-	SphereComponent->SetupAttachment(GetRootComponent());
+	SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("SceneComponent")));
 }
 
-void AAuraEffectActor::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void AAuraEffectActor::ApplyEffectTo(AActor* TargetActor, TSubclassOf<UGameplayEffect> GameplayEffectClass)
 {
-	// TODO:修改为使用 GameplayEffect，const_cast 仅用于暂时测试
-	if (auto ASCInterface = Cast<IAbilitySystemInterface>(OtherActor))
-	{
-		auto ASC = ASCInterface->GetAbilitySystemComponent();
-		const auto AuraAttributeSet = Cast<UAuraAttributeSet>(ASC->GetSet<UAttributeSet>());
+	if (TargetActor == nullptr) return;
+	auto ASC = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(TargetActor);
 
-		auto MutableAttributeSet = const_cast<UAuraAttributeSet*>(AuraAttributeSet);
-		MutableAttributeSet->SetHealth(MutableAttributeSet->GetHealth() + 25.f);
-		MutableAttributeSet->SetMana(MutableAttributeSet->GetMana() + 10.f);
-		Destroy();
-	}
+	check(GameplayEffectClass);
+	auto Context = ASC->MakeEffectContext();
+	Context.AddSourceObject(this);
+	auto EffectSpecHandle = ASC->MakeOutgoingSpec(GameplayEffectClass, 1.f, Context);
+	ASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
 }
-
-void AAuraEffectActor::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
-	
-}
-
-void AAuraEffectActor::BeginPlay()
-{
-	Super::BeginPlay();
-
-	SphereComponent->OnComponentBeginOverlap.AddDynamic(this, &AAuraEffectActor::OnOverlap);
-	SphereComponent->OnComponentEndOverlap.AddDynamic(this, &AAuraEffectActor::OnEndOverlap);
-}
-

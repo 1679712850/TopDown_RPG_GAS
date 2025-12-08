@@ -14,6 +14,14 @@ AAuraEffectActor::AAuraEffectActor()
 	SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("SceneComponent")));
 }
 
+void AAuraEffectActor::OnOverlap(AActor* TargetActor)
+{
+}
+
+void AAuraEffectActor::OnEndOverlap(AActor* TargetActor)
+{
+}
+
 void AAuraEffectActor::ApplyEffectTo(AActor* TargetActor, TSubclassOf<UGameplayEffect> GameplayEffectClass)
 {
 	if (TargetActor == nullptr) return;

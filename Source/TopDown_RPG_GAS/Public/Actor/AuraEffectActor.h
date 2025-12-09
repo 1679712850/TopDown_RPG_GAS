@@ -68,4 +68,8 @@ public:
 	EEffectRemovalPolicy InfiniteEffectRemovalPolicy = EEffectRemovalPolicy::RemoveOnEndOverlap;
 
 	TMap<FActiveGameplayEffectHandle, UAbilitySystemComponent*> ActivateEffectHandles;
+	
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Applied Effect" )
+	float EffectLevel = 1.0f;
+
 };

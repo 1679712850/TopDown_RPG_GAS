@@ -32,6 +32,8 @@ struct FUIWidgetData : public FTableRowBase
 	UTexture2D* Image = nullptr;
 };
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMessageWidgetDataSignature, const FUIWidgetData&, WidgetData);
+
 /**
  * 
  */
@@ -55,6 +57,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category="Aura|Attributes")
 	FOnMaxManaChangedSignature OnMaxMaxManaChanged;
+
+	UPROPERTY(BlueprintAssignable, Category="Aura|Message")
+	FOnMessageWidgetDataSignature MessageWidgetDataDelegate;
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Widget Data")

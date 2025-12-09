@@ -25,6 +25,11 @@ void AAuraEffectActor::OnOverlap(AActor* TargetActor)
 	{
 		ApplyEffectTo(TargetActor, DurationGameplayEffectClass);
 	}
+
+	if (InfiniteEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap)
+	{
+		ApplyEffectTo(TargetActor, InfiniteGameplayEffectClass);
+	}
 }
 
 void AAuraEffectActor::OnEndOverlap(AActor* TargetActor)
@@ -38,6 +43,32 @@ void AAuraEffectActor::OnEndOverlap(AActor* TargetActor)
 	{
 		ApplyEffectTo(TargetActor, DurationGameplayEffectClass);
 	}
+
+	if (InfiniteEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap)
+	{
+		ApplyEffectTo(TargetActor, InfiniteGameplayEffectClass);
+	}
+
+	if (InfiniteEffectRemovalPolicy == EEffectRemovalPolicy::RemoveOnEndOverlap)
+	{
+		auto ASC = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(TargetActor);
+		if (!IsValid(ASC)) return;
+
+		TArray<FActiveGameplayEffectHandle> HandlesToRemoved;
+		for (const auto& ActivateEffectHandle : ActivateEffectHandles)
+		{
+			if (ActivateEffectHandle.Value == ASC)
+			{
+				ASC->RemoveActiveGameplayEffect(ActivateEffectHandle.Key, 1);
+				HandlesToRemoved.Add(ActivateEffectHandle.Key);
+			}
+		}
+
+		for (auto& ToRemoved : HandlesToRemoved)
+		{
+			ActivateEffectHandles.FindAndRemoveChecked(ToRemoved);
+		}
+	}
 }
 
 void AAuraEffectActor::ApplyEffectTo(AActor* TargetActor, TSubclassOf<UGameplayEffect> GameplayEffectClass)
@@ -48,6 +79,12 @@ void AAuraEffectActor::ApplyEffectTo(AActor* TargetActor, TSubclassOf<UGameplayE
 	check(GameplayEffectClass);
 	auto Context = ASC->MakeEffectContext();
 	Context.AddSourceObject(this);
-	auto EffectSpecHandle = ASC->MakeOutgoingSpec(GameplayEffectClass, 1.f, Context);
-	ASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
+	const auto EffectSpecHandle = ASC->MakeOutgoingSpec(GameplayEffectClass, 1.f, Context);
+	const auto ActivateEffectHandle = ASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
+
+	const auto bIsInfinite = EffectSpecHandle.Data->Def->DurationPolicy == EGameplayEffectDurationType::Infinite;
+	if (bIsInfinite && InfiniteEffectRemovalPolicy == EEffectRemovalPolicy::RemoveOnEndOverlap)
+	{
+		ActivateEffectHandles.Add(ActivateEffectHandle, ASC);
+	}
 }

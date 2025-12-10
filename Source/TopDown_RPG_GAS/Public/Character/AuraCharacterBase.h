@@ -37,8 +37,13 @@ protected:
 	TObjectPtr<UAttributeSet> AttributeSet;
 
 	UPROPERTY(BlueprintReadOnly ,EditAnywhere, Category = "Attributes")
-	TSubclassOf<UGameplayEffect> InitialPrimaryAttributesEffect;
+	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributesEffect;
 
-	void InitializePrimaryAttributes();
+	UPROPERTY(BlueprintReadOnly ,EditAnywhere, Category = "Attributes")
+	TSubclassOf<UGameplayEffect> DefaultSecondaryAttributesEffect;
+	
+	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> EffectClass, float Level = 1.f);
+
+	void InitializeDefaultAttributes();
 	
 };

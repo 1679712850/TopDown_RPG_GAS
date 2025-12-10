@@ -28,9 +28,16 @@ UAbilitySystemComponent* AAuraCharacterBase::GetAbilitySystemComponent() const
 	return AbilitySystemComponent;
 }
 
-void AAuraCharacterBase::InitializePrimaryAttributes()
+void AAuraCharacterBase::ApplyEffectToSelf(TSubclassOf<UGameplayEffect> EffectClass, float Level)
 {
-	
-	const auto SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(InitialPrimaryAttributesEffect, 1.f, AbilitySystemComponent->MakeEffectContext());
+	check(AbilitySystemComponent)
+	check(EffectClass)
+	const auto SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(EffectClass, Level, AbilitySystemComponent->MakeEffectContext());
 	AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data, AbilitySystemComponent);
+}
+
+void AAuraCharacterBase::InitializeDefaultAttributes()
+{
+	ApplyEffectToSelf(DefaultPrimaryAttributesEffect);
+	ApplyEffectToSelf(DefaultSecondaryAttributesEffect);
 }

@@ -5,13 +5,14 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
 #include "GameFramework/Character.h"
+#include "Interaction/CombatInterface.h"
 #include "AuraCharacterBase.generated.h"
 
 class UGameplayEffect;
 class UAttributeSet;
 
 UCLASS(Abstract)
-class TOPDOWN_RPG_GAS_API AAuraCharacterBase : public ACharacter, public IAbilitySystemInterface
+class TOPDOWN_RPG_GAS_API AAuraCharacterBase : public ACharacter, public IAbilitySystemInterface , public ICombatInterface
 {
 	GENERATED_BODY()
 

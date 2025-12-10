@@ -19,8 +19,14 @@ public:
 	virtual void Highlight() override;
 	virtual void UnHighlight() override;
 	/* end Enemy Interface */
-	
+
+	/* Combat Interface */
+	virtual int32 GetPlayerLevel() override;
+	/* end Combat Interface */
 protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo() override;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Aura")
+	int32 Level = 1;
 };

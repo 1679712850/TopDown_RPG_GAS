@@ -3,7 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AttributeSet.h"
 #include "AuraWidgetController.h"
+#include "GameplayTagContainer.h"
 #include "AttributeMenuWidgetController.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAttributeInfoSignature, const FAuraAttributeInfo&, AttributeInfo);
@@ -24,4 +26,8 @@ public:
 protected:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category="AttributeMenuWidgetController")
 	TObjectPtr<class UAttributeInfoDataAsset> AttributeInfo;
+
+private:
+	void BroadcastAttributeInfo(const FGameplayTag& AttributeTag, const FGameplayAttribute& Attribute);
+
 };

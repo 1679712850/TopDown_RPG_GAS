@@ -14,6 +14,7 @@ class TOPDOWN_RPG_GAS_API UAuraUserWidget : public UUserWidget
 {
 	GENERATED_BODY()
 public:
+	UFUNCTION(BlueprintCallable)
 	void SetWidgetController(UObject* InController);
 
 	UPROPERTY(BlueprintReadOnly)

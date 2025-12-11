@@ -16,6 +16,9 @@ class TOPDOWN_RPG_GAS_API UAuraAbilitySystemBlueprintLibrary : public UBlueprint
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable, Category="AuraAbilitySystemLibrary|WidgetController")
+	UFUNCTION(BlueprintCallable,BlueprintPure, Category="AuraAbilitySystemLibrary|WidgetController")
 	static UOverlayWidgetController* GetOverlayWidgetController(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintCallable,BlueprintPure, Category="AuraAbilitySystemLibrary|WidgetController")
+	static UAttributeMenuWidgetController* GetAttributeMenuWidgetController(const UObject* WorldContextObject);
 };

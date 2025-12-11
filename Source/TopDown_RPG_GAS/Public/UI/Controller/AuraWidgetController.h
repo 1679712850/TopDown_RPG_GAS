@@ -47,6 +47,8 @@ class TOPDOWN_RPG_GAS_API UAuraWidgetController : public UObject
 	GENERATED_BODY()
 public:
 	void SetWidgetControllerParams(const FWidgetControllerParams& Params);
+	
+	UFUNCTION(BlueprintCallable)
 	virtual void BroadcastInitialValues();
 	virtual void BindCallbacksToDependencies();
 protected:

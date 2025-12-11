@@ -6,7 +6,7 @@
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 
-void UOverlayWidgetController::BroadcastInitValues()
+void UOverlayWidgetController::BroadcastInitialValues()
 {
 	const auto* AuraAttributeSet = Cast<UAuraAttributeSet>(AttributeSet);
 

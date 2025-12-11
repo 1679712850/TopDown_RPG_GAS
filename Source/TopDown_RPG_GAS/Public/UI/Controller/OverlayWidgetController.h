@@ -43,7 +43,7 @@ class TOPDOWN_RPG_GAS_API UOverlayWidgetController : public UAuraWidgetControlle
 	GENERATED_BODY()
 
 public:
-	virtual void BroadcastInitValues() override;
+	virtual void BroadcastInitialValues() override;
 	virtual void BindCallbacksToDependencies() override;
 	
 	UPROPERTY(BlueprintAssignable, Category="Aura|Attributes")

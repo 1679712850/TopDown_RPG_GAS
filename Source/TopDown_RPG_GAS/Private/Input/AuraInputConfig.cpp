@@ -1,7 +1,7 @@
 ﻿// Copyright 13
 
 
-#include "AuraInputConfig.h"
+#include "Input/AuraInputConfig.h"
 
 UInputAction* UAuraInputConfig::FindAbilityInputActionForTag(const FGameplayTag& InputTag, bool bLogNotFound)
 {

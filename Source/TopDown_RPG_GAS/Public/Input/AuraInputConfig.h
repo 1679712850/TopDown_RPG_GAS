@@ -30,7 +30,7 @@ class TOPDOWN_RPG_GAS_API UAuraInputConfig : public UDataAsset
 	GENERATED_BODY()
 public:
 	UInputAction* FindAbilityInputActionForTag(const FGameplayTag& InputTag,bool bLogNotFound = false);
-protected:
+
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	TArray<FAuraInputAction> AbilityInputActions;
 };

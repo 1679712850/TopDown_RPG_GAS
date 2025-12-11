@@ -18,6 +18,8 @@ class TOPDOWN_RPG_GAS_API UAuraAbilitySystemComponent : public UAbilitySystemCom
 public:
 	void AbilityActorInfoSet();
 
+	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities);
+
 	FEffectAssetTags EffectAssetTags;
 protected:
 	void OnEffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveGameplayEffectHandle);

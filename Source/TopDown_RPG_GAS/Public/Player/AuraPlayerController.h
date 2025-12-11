@@ -7,6 +7,8 @@
 #include "GameFramework/PlayerController.h"
 #include "AuraPlayerController.generated.h"
 
+struct FGameplayTag;
+class UAuraInputConfig;
 class IEnemyInterface;
 class UInputAction;
 class UInputMappingContext;
@@ -36,4 +38,11 @@ private:
 	void CursorTrace();
 	IEnemyInterface* LastEnemy;
 	IEnemyInterface* CurrentEnemy;
+
+	void AbilityTagInputPressed(FGameplayTag InputTag);
+	void AbilityTagInputReleased(FGameplayTag InputTag);
+	void AbilityTagInputHeld(FGameplayTag InputTag);
+
+	UPROPERTY(EditAnywhere,Category="Input")
+	TObjectPtr<UAuraInputConfig> InputConfig;
 };

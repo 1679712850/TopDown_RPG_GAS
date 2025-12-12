@@ -13,4 +13,8 @@ UCLASS()
 class TOPDOWN_RPG_GAS_API UAuraGameplayAbility : public UGameplayAbility
 {
 	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere,Category="Ability")
+	FGameplayTag StartupAbilityTag;
 };

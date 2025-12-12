@@ -3,6 +3,8 @@
 
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 
+#include "AbilitySystem/Ability/AuraGameplayAbility.h"
+
 
 void UAuraAbilitySystemComponent::AbilityActorInfoSet()
 {
@@ -14,8 +16,37 @@ void UAuraAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf
 	for (const auto& StartupAbility : StartupAbilities)
 	{
 		auto Spec = FGameplayAbilitySpec(StartupAbility);
-		// GiveAbility(Spec);
-		GiveAbilityAndActivateOnce(Spec);
+		if (auto AuraAbility = Cast<UAuraGameplayAbility>(Spec.Ability))
+		{
+			Spec.GetDynamicSpecSourceTags().AddTag(AuraAbility->StartupAbilityTag);
+			GiveAbility(Spec);
+		}
+	}
+}
+
+void UAuraAbilitySystemComponent::OnAbilityTagInputHeld(FGameplayTag InputTag)
+{
+	for (auto& Spec : GetActivatableAbilities())
+	{
+		if (Spec.GetDynamicSpecSourceTags().HasTagExact(InputTag))
+		{
+			AbilitySpecInputPressed(Spec);
+			if (Spec.IsActive())
+			{
+				TryActivateAbility(Spec.Handle);
+			}
+		}
+	}
+}
+
+void UAuraAbilitySystemComponent::OnAbilityTagInputReleased(FGameplayTag InputTag)
+{
+	for (auto& Spec : GetActivatableAbilities())
+	{
+		if (Spec.GetDynamicSpecSourceTags().HasTagExact(InputTag))
+		{
+			AbilitySpecInputReleased(Spec);
+		}
 	}
 }
 

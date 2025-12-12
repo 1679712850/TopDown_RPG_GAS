@@ -3,8 +3,10 @@
 
 #include "Player/AuraPlayerController.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Input/AuraEnhancedInputComponent.h"
 #include "Interaction/EnemyInterface.h"
 
@@ -84,10 +86,27 @@ void AAuraPlayerController::AbilityTagInputPressed(FGameplayTag InputTag)
 
 void AAuraPlayerController::AbilityTagInputReleased(FGameplayTag InputTag)
 {
+	if (auto AuraASC = GetAuraAbilitySystemComponent())
+	{
+		AuraASC->OnAbilityTagInputReleased(InputTag);
+	}
 }
 
 void AAuraPlayerController::AbilityTagInputHeld(FGameplayTag InputTag)
 {
+	if (auto AuraASC = GetAuraAbilitySystemComponent())
+	{
+		AuraASC->OnAbilityTagInputHeld(InputTag);
+	}
+}
+
+UAuraAbilitySystemComponent* AAuraPlayerController::GetAuraAbilitySystemComponent()
+{
+	if (AuraAbilitySystemComponent == nullptr)
+	{
+		AuraAbilitySystemComponent = Cast<UAuraAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn()));
+	}
+	return AuraAbilitySystemComponent;
 }
 
 void AAuraPlayerController::BeginPlay()

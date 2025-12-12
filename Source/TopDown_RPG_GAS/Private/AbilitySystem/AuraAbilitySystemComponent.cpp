@@ -31,7 +31,7 @@ void UAuraAbilitySystemComponent::OnAbilityTagInputHeld(FGameplayTag InputTag)
 		if (Spec.GetDynamicSpecSourceTags().HasTagExact(InputTag))
 		{
 			AbilitySpecInputPressed(Spec);
-			if (Spec.IsActive())
+			if (!Spec.IsActive())
 			{
 				TryActivateAbility(Spec.Handle);
 			}

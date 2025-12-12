@@ -9,6 +9,8 @@
 
 AAuraProjectile::AAuraProjectile()
 {
+	bReplicates = true;
+	
 	SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComponent"));
 	SetRootComponent(SphereComponent);
 	SphereComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);

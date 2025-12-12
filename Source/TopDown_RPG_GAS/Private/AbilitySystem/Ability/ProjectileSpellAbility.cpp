@@ -11,8 +11,12 @@ void UProjectileSpellAbility::ActivateAbility(const FGameplayAbilitySpecHandle H
                                               const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+	
+}
 
-	const bool bIsServer = HasAuthority(&ActivationInfo);
+void UProjectileSpellAbility::SpawnProjectile(const FGameplayAbilityActivationInfo ActivationInfo)
+{
+	const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
 	if (!bIsServer)
 	{
 		return;	
@@ -37,5 +41,3 @@ void UProjectileSpellAbility::ActivateAbility(const FGameplayAbilitySpecHandle H
 		Projectile->FinishSpawning(SpawnTransform);
 	}
 }
-
-

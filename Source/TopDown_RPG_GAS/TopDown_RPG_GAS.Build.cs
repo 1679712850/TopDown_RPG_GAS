@@ -7,6 +7,7 @@ public class TopDown_RPG_GAS : ModuleRules
 	public TopDown_RPG_GAS(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+		OptimizeCode = CodeOptimization.Never;
 
 		PublicDependencyModuleNames.AddRange(new string[]
 		{

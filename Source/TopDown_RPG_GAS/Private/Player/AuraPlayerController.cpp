@@ -4,9 +4,11 @@
 #include "Player/AuraPlayerController.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
+#include "AuraGameplayTags.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "Components/SplineComponent.h"
 #include "Input/AuraEnhancedInputComponent.h"
 #include "Interaction/EnemyInterface.h"
 
@@ -14,6 +16,8 @@
 AAuraPlayerController::AAuraPlayerController()
 {
 	bReplicates = true;
+
+	Spline = CreateDefaultSubobject<USplineComponent>(TEXT("Spline"));
 }
 
 void AAuraPlayerController::PlayerTick(float DeltaTime)
@@ -82,6 +86,11 @@ void AAuraPlayerController::CursorTrace()
 
 void AAuraPlayerController::AbilityTagInputPressed(FGameplayTag InputTag)
 {
+	if (InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
+	{
+		bTargeting = CurrentEnemy ? true : false;
+		bAutoRunning = false;
+	}
 }
 
 void AAuraPlayerController::AbilityTagInputReleased(FGameplayTag InputTag)
@@ -94,9 +103,37 @@ void AAuraPlayerController::AbilityTagInputReleased(FGameplayTag InputTag)
 
 void AAuraPlayerController::AbilityTagInputHeld(FGameplayTag InputTag)
 {
-	if (auto AuraASC = GetAuraAbilitySystemComponent())
+	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
-		AuraASC->OnAbilityTagInputHeld(InputTag);
+		if (auto AuraASC = GetAuraAbilitySystemComponent())
+		{
+			AuraASC->OnAbilityTagInputHeld(InputTag);
+		}
+		return;
+	}
+
+	if (bTargeting)
+	{
+		if (auto AuraASC = GetAuraAbilitySystemComponent())
+		{
+			AuraASC->OnAbilityTagInputHeld(InputTag);
+		}
+	}
+	else
+	{
+		FollowTime += GetWorld()->GetDeltaSeconds();
+
+		FHitResult Hit;
+		if (GetHitResultUnderCursor(ECC_Visibility, false, Hit))
+		{
+			CachedDestination = Hit.ImpactPoint;
+		}
+
+		if (APawn* ControlledPawn = GetPawn())
+		{
+			const FVector WorldDirection = (CachedDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
+			ControlledPawn->AddMovementInput(WorldDirection);
+		}
 	}
 }
 
@@ -133,7 +170,7 @@ void AAuraPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	auto EnhancedInputComponent = CastChecked<UAuraEnhancedInputComponent>(InputComponent);
+	auto EnhancedInputComponent = Cast<UAuraEnhancedInputComponent>(InputComponent);
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AAuraPlayerController::OnMove);
 	EnhancedInputComponent->BindAbilityActions(InputConfig, this, 
 		&AAuraPlayerController::AbilityTagInputPressed,

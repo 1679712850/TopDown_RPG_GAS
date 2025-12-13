@@ -20,10 +20,11 @@ public class TopDown_RPG_GAS : ModuleRules
 			"GameplayTags",
 			"GameplayTasks",
 			"UMG",
-			"NavigationSystem"
+			"NavigationSystem",
+			"Niagara"
 		});
 
-		PrivateDependencyModuleNames.AddRange(new string[] { });
+		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });

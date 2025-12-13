@@ -3,9 +3,9 @@
 
 #include "UI/Controller/AttributeMenuWidgetController.h"
 
-#include "AttributeInfoDataAsset.h"
 #include "AuraGameplayTags.h"
 #include "AbilitySystem/AuraAttributeSet.h"
+#include "Data/AttributeInfoDataAsset.h"
 
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 {

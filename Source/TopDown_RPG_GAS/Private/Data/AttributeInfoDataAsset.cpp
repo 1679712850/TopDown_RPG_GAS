@@ -1,7 +1,7 @@
 ﻿// Copyright 13
 
 
-#include "AttributeInfoDataAsset.h"
+#include "Data/AttributeInfoDataAsset.h"
 
 FAuraAttributeInfo UAttributeInfoDataAsset::FindAttributeInfoForTag(const FGameplayTag& AttributeTag,
                                                                     bool bLogNotFound) const

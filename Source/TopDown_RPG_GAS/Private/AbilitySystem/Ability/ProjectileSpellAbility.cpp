@@ -14,7 +14,7 @@ void UProjectileSpellAbility::ActivateAbility(const FGameplayAbilitySpecHandle H
 	
 }
 
-void UProjectileSpellAbility::SpawnProjectile(const FGameplayAbilityActivationInfo ActivationInfo)
+void UProjectileSpellAbility::SpawnProjectile(const FVector& TargetLocation)
 {
 	const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
 	if (!bIsServer)
@@ -24,10 +24,14 @@ void UProjectileSpellAbility::SpawnProjectile(const FGameplayAbilityActivationIn
 
 	if (auto CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo()))
 	{
-		FTransform SpawnTransform;
-		SpawnTransform.SetLocation(CombatInterface->GetCombatSocketLocation());
+		auto SocketLocation = CombatInterface->GetCombatSocketLocation();
 
-		//TODO: Set the Projectile Rotation
+		FTransform SpawnTransform;
+		SpawnTransform.SetLocation(SocketLocation);
+		
+		auto Rotation = (TargetLocation - SocketLocation).Rotation();
+		Rotation.Pitch = 0.f;
+		SpawnTransform.SetRotation(Rotation.Quaternion());
 		
 		auto Projectile = GetWorld()->SpawnActorDeferred<AAuraProjectile>(
 			ProjectileClass,

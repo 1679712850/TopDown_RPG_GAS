@@ -26,6 +26,7 @@ public:
 
 	/* Combat Interface */
 	virtual int32 GetPlayerLevel() override;
+	virtual void Die() override;
 	/* end Combat Interface */
 
 	UPROPERTY(BlueprintAssignable)
@@ -54,4 +55,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
 	ECharacterClass CharacterClass = ECharacterClass::Warrior;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Combat")
+	float LifeSpan = 5.f;	
 };

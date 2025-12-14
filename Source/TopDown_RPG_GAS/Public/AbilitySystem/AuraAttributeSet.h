@@ -171,7 +171,7 @@ protected:
 	UFUNCTION()
 	void OnRep_MaxMana(const FGameplayAttributeData& OldValue);
 	
-private:
+public:
 	/*
 	 * Primary Attributes
 	 */

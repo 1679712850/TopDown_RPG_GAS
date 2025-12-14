@@ -97,15 +97,21 @@ public:
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, CriticalHitResistance);
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, HealthRegeneration);
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, ManaRegeneration);
-	
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, MaxHealth);
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, MaxMana);
+
 
 	/*
 	 * Vital Attributes Accessors
 	 */
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Health);
-	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, MaxHealth);
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Mana);
-	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, MaxMana);
+
+	/*
+	 * Meta Attributes Accessors
+	 */
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, IncomingDamage);
+	
 protected:
 	/*
 	 * Primary Attributes Replication Callbacks
@@ -223,7 +229,11 @@ private:
 	UPROPERTY(BlueprintReadOnly,ReplicatedUsing=OnRep_Mana, Category="Attributes", Meta=(AllowPrivateAccess = true))
 	FGameplayAttributeData Mana;
 
-
+	/*
+	 * Meta Attributes
+	 */
+	UPROPERTY(BlueprintReadOnly, Category="Meta Attributes",meta=(AllowPrivateAccess = true))
+	FGameplayAttributeData IncomingDamage;
 private:
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const;
 };

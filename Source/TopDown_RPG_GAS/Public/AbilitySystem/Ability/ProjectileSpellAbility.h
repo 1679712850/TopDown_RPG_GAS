@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AuraGameplayAbility.h"
+#include "DamageGameplayAbility.h"
 #include "ProjectileSpellAbility.generated.h"
 
 class AAuraProjectile;
@@ -11,7 +12,7 @@ class AAuraProjectile;
  * 
  */
 UCLASS()
-class TOPDOWN_RPG_GAS_API UProjectileSpellAbility : public UAuraGameplayAbility
+class TOPDOWN_RPG_GAS_API UProjectileSpellAbility : public UDamageGameplayAbility
 {
 	GENERATED_BODY()
 public:
@@ -22,7 +23,4 @@ public:
 private:
 	UPROPERTY(EditDefaultsOnly)	
 	TSubclassOf<AAuraProjectile> ProjectileClass;
-
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UGameplayEffect> DamageEffectClass;
 };

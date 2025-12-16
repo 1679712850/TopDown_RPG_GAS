@@ -33,7 +33,6 @@ void UProjectileSpellAbility::SpawnProjectile(const FVector& TargetLocation)
 		SpawnTransform.SetLocation(SocketLocation);
 		
 		auto Rotation = (TargetLocation - SocketLocation).Rotation();
-		Rotation.Pitch = 0.f;
 		SpawnTransform.SetRotation(Rotation.Quaternion());
 		
 		auto Projectile = GetWorld()->SpawnActorDeferred<AAuraProjectile>(

@@ -146,7 +146,10 @@ void AAuraPlayerController::AbilityTagInputReleased(FGameplayTag InputTag)
 					DrawDebugSphere(GetWorld(), Point, 8.f, 8, FColor::Green, false, 5.f);
 				}
 				bAutoRunning = true;
-				CachedDestination = NavPath->PathPoints.Last();
+				if (!NavPath->PathPoints.IsEmpty())
+				{
+					CachedDestination = NavPath->PathPoints.Last();
+				}
 			}
 		}
 		FollowTime = 0.f;

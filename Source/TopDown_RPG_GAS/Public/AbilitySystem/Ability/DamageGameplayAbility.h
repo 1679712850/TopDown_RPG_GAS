@@ -13,6 +13,9 @@ UCLASS()
 class TOPDOWN_RPG_GAS_API UDamageGameplayAbility : public UAuraGameplayAbility
 {
 	GENERATED_BODY()
+public:
+	UFUNCTION(BlueprintCallable)
+	void CauseDamage(AActor* TargetActor);
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UGameplayEffect> DamageEffectClass;

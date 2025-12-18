@@ -25,6 +25,8 @@ public:
 	/* Enemy Interface */
 	virtual void Highlight() override;
 	virtual void UnHighlight() override;
+	virtual void SetCombatTarget_Implementation(AActor* InCombatTarget) override;
+	virtual AActor* GetCombatTarget_Implementation() const override;
 	/* end Enemy Interface */
 
 	/* Combat Interface */
@@ -67,4 +69,7 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<AAuraAIController> AuraAIController;
+	
+	UPROPERTY(BlueprintReadWrite, Category = "Combat")
+	TObjectPtr<AActor> CombatTarget;
 };

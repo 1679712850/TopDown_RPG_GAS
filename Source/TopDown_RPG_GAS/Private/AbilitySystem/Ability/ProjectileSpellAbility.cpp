@@ -27,7 +27,7 @@ void UProjectileSpellAbility::SpawnProjectile(const FVector& TargetLocation)
 	
 	auto SocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(
 		GetAvatarActorFromActorInfo(),
-		FAuraGameplayTags::Get().Montage_Attack_Weapon);
+		FAuraGameplayTags::Get().CombatSocket_Weapon);
 
 	FTransform SpawnTransform;
 	SpawnTransform.SetLocation(SocketLocation);

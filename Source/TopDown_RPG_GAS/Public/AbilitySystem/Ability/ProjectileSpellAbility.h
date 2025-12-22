@@ -17,7 +17,7 @@ class TOPDOWN_RPG_GAS_API UProjectileSpellAbility : public UDamageGameplayAbilit
 	GENERATED_BODY()
 public:
 	UFUNCTION(BlueprintCallable, Category = "Projectile")
-	void SpawnProjectile(const FVector& TargetLocation);
+	void SpawnProjectile(const FVector& TargetLocation, const FGameplayTag& SocketTag);
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
 
 private:

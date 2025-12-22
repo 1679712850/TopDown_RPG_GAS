@@ -17,7 +17,7 @@ void UProjectileSpellAbility::ActivateAbility(const FGameplayAbilitySpecHandle H
 	
 }
 
-void UProjectileSpellAbility::SpawnProjectile(const FVector& TargetLocation)
+void UProjectileSpellAbility::SpawnProjectile(const FVector& TargetLocation, const FGameplayTag& SocketTag)
 {
 	const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
 	if (!bIsServer)
@@ -27,7 +27,7 @@ void UProjectileSpellAbility::SpawnProjectile(const FVector& TargetLocation)
 	
 	auto SocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(
 		GetAvatarActorFromActorInfo(),
-		FAuraGameplayTags::Get().CombatSocket_Weapon);
+		SocketTag);
 
 	FTransform SpawnTransform;
 	SpawnTransform.SetLocation(SocketLocation);

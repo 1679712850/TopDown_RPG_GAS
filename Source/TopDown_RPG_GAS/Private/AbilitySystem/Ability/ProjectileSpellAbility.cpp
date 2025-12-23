@@ -17,7 +17,7 @@ void UProjectileSpellAbility::ActivateAbility(const FGameplayAbilitySpecHandle H
 	
 }
 
-void UProjectileSpellAbility::SpawnProjectile(const FVector& TargetLocation, const FGameplayTag& SocketTag)
+void UProjectileSpellAbility::SpawnProjectile(const FVector& TargetLocation, const FGameplayTag& SocketTag, bool bOverridePitch , float PitchOverride)
 {
 	const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
 	if (!bIsServer)
@@ -33,6 +33,10 @@ void UProjectileSpellAbility::SpawnProjectile(const FVector& TargetLocation, con
 	SpawnTransform.SetLocation(SocketLocation);
 	
 	auto Rotation = (TargetLocation - SocketLocation).Rotation();
+	if (bOverridePitch)
+	{
+		Rotation.Pitch = PitchOverride;
+	}
 	SpawnTransform.SetRotation(Rotation.Quaternion());
 	
 	auto Projectile = GetWorld()->SpawnActorDeferred<AAuraProjectile>(

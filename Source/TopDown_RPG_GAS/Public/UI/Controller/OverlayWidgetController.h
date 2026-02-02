@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AuraWidgetController.h"
 #include "GameplayTagContainer.h"
+#include "Data/AbilityInfo.h"
 #include "OverlayWidgetController.generated.h"
 
 class UAuraUserWidget;
@@ -64,6 +65,9 @@ public:
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Widget Data")
 	TObjectPtr<UDataTable> MessageWidgetDataTable;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Widget Data")
+	TObjectPtr<UAbilityInfoDataAsset> AbilityInfoDataAsset;
 	
 	void HealthChanged(const FOnAttributeChangeData& Data);
 	void MaxHealthChanged(const FOnAttributeChangeData& Data);

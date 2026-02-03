@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AuraWidgetController.h"
 #include "GameplayTagContainer.h"
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Data/AbilityInfo.h"
 #include "OverlayWidgetController.generated.h"
 
@@ -73,6 +74,8 @@ protected:
 	void MaxHealthChanged(const FOnAttributeChangeData& Data);
 	void ManaChanged(const FOnAttributeChangeData& Data);
 	void MaxManaChanged(const FOnAttributeChangeData& Data);
+
+	void OnInitializeStartupAbilities(UAuraAbilitySystemComponent* AuraAbilitySystemComponent);
 
 	template<typename T>
 	T* GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag);

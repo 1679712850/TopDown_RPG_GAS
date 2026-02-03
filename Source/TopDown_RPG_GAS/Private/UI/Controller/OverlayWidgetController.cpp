@@ -14,7 +14,6 @@ void UOverlayWidgetController::BroadcastInitialValues()
 	OnMaxMaxHealthChanged.Broadcast(AuraAttributeSet->GetMaxHealth());
 	OnManaChanged.Broadcast(AuraAttributeSet->GetMana());
 	OnMaxMaxManaChanged.Broadcast(AuraAttributeSet->GetMaxMana());
-	
 }
 
 void UOverlayWidgetController::BindCallbacksToDependencies()
@@ -22,27 +21,39 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	const auto* AuraAttributeSet = Cast<UAuraAttributeSet>(AttributeSet);
 
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAttributeSet->GetHealthAttribute())
-		.AddUObject(this,&UOverlayWidgetController::HealthChanged);
+	                      .AddUObject(this, &UOverlayWidgetController::HealthChanged);
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAttributeSet->GetMaxHealthAttribute())
-		.AddUObject(this,&UOverlayWidgetController::MaxHealthChanged);
+	                      .AddUObject(this, &UOverlayWidgetController::MaxHealthChanged);
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAttributeSet->GetManaAttribute())
-		.AddUObject(this,&UOverlayWidgetController::ManaChanged);
+	                      .AddUObject(this, &UOverlayWidgetController::ManaChanged);
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAttributeSet->GetMaxManaAttribute())
-		.AddUObject(this,&UOverlayWidgetController::MaxManaChanged);
+	                      .AddUObject(this, &UOverlayWidgetController::MaxManaChanged);
 
-	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLambda(
-	[this](const FGameplayTagContainer& AssetTags)
+	if (auto AuraASC = Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent))
+	{
+		if (AuraASC->bStartupAbilitiesGiven)
+		{
+			OnInitializeStartupAbilities(AuraASC);
+		}
+		else
+		{
+			AuraASC->OnAbilitiesGivenDelegate.AddUObject(this,&UOverlayWidgetController::OnInitializeStartupAbilities);
+		}
+		
+		AuraASC->EffectAssetTags.AddLambda(
+			[this](const FGameplayTagContainer& AssetTags)
 			{
 				for (const auto& Tag : AssetTags)
 				{
 					const auto MessageTag = FGameplayTag::RequestGameplayTag(TEXT("Message"));
 					if (Tag.MatchesTag(MessageTag))
 					{
-						auto Row = GetDataTableRowByTag<FUIWidgetData>(MessageWidgetDataTable,Tag);
+						auto Row = GetDataTableRowByTag<FUIWidgetData>(MessageWidgetDataTable, Tag);
 						MessageWidgetDataDelegate.Broadcast(*Row);
 					}
 				}
 			});
+	}
 }
 
 void UOverlayWidgetController::HealthChanged(const FOnAttributeChangeData& Data)
@@ -63,4 +74,8 @@ void UOverlayWidgetController::ManaChanged(const FOnAttributeChangeData& Data)
 void UOverlayWidgetController::MaxManaChanged(const FOnAttributeChangeData& Data)
 {
 	OnMaxMaxManaChanged.Broadcast(Data.NewValue);
+}
+
+void UOverlayWidgetController::OnInitializeStartupAbilities(UAuraAbilitySystemComponent* AuraAbilitySystemComponent)
+{
 }

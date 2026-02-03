@@ -35,7 +35,7 @@ struct FUIWidgetData : public FTableRowBase
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMessageWidgetDataSignature, const FUIWidgetData&, WidgetData);
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilityInfoSignature, const FAuraAbilityInfo&, Info);
 /**
  * 
  */
@@ -62,6 +62,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category="Aura|Message")
 	FOnMessageWidgetDataSignature MessageWidgetDataDelegate;
+	
+	UPROPERTY(BlueprintAssignable, Category="GAS|Messages")
+	FAbilityInfoSignature AbilityInfoDelegate;
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Widget Data")

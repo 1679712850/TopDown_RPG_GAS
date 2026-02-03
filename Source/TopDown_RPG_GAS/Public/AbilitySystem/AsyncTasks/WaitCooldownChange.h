@@ -14,7 +14,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCooldownChangeSignature, float, Tim
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType,meta=(ExposedAsyncProxy="AsyncTask"))
 class TOPDOWN_RPG_GAS_API UAbilityAsync_WaitCooldownChange : public UBlueprintAsyncActionBase
 {
 	GENERATED_BODY()

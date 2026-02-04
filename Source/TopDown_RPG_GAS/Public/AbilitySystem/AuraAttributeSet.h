@@ -250,6 +250,10 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category="Meta Attributes",meta=(AllowPrivateAccess = true))
 	FGameplayAttributeData IncomingDamage;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, IncomingDamage);
+	
+	UPROPERTY(BlueprintReadOnly, Category="Meta Attributes",meta=(AllowPrivateAccess = true))
+	FGameplayAttributeData IncomingXP;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, IncomingXP);
 
 private:
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const;

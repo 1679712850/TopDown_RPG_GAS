@@ -32,6 +32,7 @@ public:
 	/* Combat Interface */
 	virtual int32 GetPlayerLevel() override;
 	virtual void Die() override;
+	virtual ECharacterClass GetCharacterClass_Implementation() override;
 	/* end Combat Interface */
 
 	UPROPERTY(BlueprintAssignable)

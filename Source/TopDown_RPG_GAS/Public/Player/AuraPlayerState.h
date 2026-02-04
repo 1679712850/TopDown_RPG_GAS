@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerState.h"
 #include "AuraPlayerState.generated.h"
 
+class ULevelUpInfoDataAsset;
 class UAttributeSet;
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlayerStatChanged, int32 /*StatValue*/)
 
@@ -34,6 +35,9 @@ public:
 	
 	FOnPlayerStatChanged OnLevelChangedDelegate;
 	FOnPlayerStatChanged OnXPChangedDelegate;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<ULevelUpInfoDataAsset> LevelUpInfo;
 protected:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;

@@ -11,10 +11,7 @@
 
 class UAuraUserWidget;
 struct FOnAttributeChangeData;
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChangedSignature, float, NewHealth);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxHealthChangedSignature, float, NewMaxHealth);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnManaChangedSignature, float, NewMana);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxManaChangedSignature, float, NewMaxMana);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnFloatAttributeChangedSignature, float, NewValue);
 
 USTRUCT(BlueprintType)
 struct FUIWidgetData : public FTableRowBase
@@ -49,22 +46,25 @@ public:
 	virtual void BindCallbacksToDependencies() override;
 	
 	UPROPERTY(BlueprintAssignable, Category="Aura|Attributes")
-	FOnHealthChangedSignature OnHealthChanged;
+	FOnFloatAttributeChangedSignature OnHealthChanged;
 
 	UPROPERTY(BlueprintAssignable, Category="Aura|Attributes")
-	FOnMaxHealthChangedSignature OnMaxMaxHealthChanged;
+	FOnFloatAttributeChangedSignature OnMaxMaxHealthChanged;
 	
 	UPROPERTY(BlueprintAssignable, Category="Aura|Attributes")
-	FOnManaChangedSignature OnManaChanged;
+	FOnFloatAttributeChangedSignature OnManaChanged;
 
 	UPROPERTY(BlueprintAssignable, Category="Aura|Attributes")
-	FOnMaxManaChangedSignature OnMaxMaxManaChanged;
+	FOnFloatAttributeChangedSignature OnMaxMaxManaChanged;
 
 	UPROPERTY(BlueprintAssignable, Category="Aura|Message")
 	FOnMessageWidgetDataSignature MessageWidgetDataDelegate;
 	
 	UPROPERTY(BlueprintAssignable, Category="GAS|Messages")
 	FAbilityInfoSignature AbilityInfoDelegate;
+	
+	UPROPERTY(BlueprintAssignable, Category="Aura|Messages")
+	FOnFloatAttributeChangedSignature OnXPPercentChanged;
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Widget Data")
@@ -82,6 +82,8 @@ protected:
 
 	template<typename T>
 	T* GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag);
+	
+	void OnXPChanged(int32 NewXP) const;
 };
 
 template <typename T>

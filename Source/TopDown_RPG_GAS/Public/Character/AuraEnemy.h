@@ -35,10 +35,10 @@ public:
 	/* end Combat Interface */
 
 	UPROPERTY(BlueprintAssignable)
-	FOnHealthChangedSignature OnHealthChanged;
+	FOnFloatAttributeChangedSignature OnHealthChanged;
 
 	UPROPERTY(BlueprintAssignable)
-	FOnMaxHealthChangedSignature OnMaxHealthChanged;
+	FOnFloatAttributeChangedSignature OnMaxHealthChanged;
 
 	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
 

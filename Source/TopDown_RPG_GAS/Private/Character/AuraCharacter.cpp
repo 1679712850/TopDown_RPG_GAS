@@ -43,7 +43,11 @@ void AAuraCharacter::OnRep_PlayerState()
 	AddCharacterAbilities();
 }
 
-int32 AAuraCharacter::GetPlayerLevel()
+void AAuraCharacter::LevelUp_Implementation()
+{
+}
+
+int32 AAuraCharacter::GetPlayerLevel_Implementation()
 {
 	auto AuraPlayerState = GetPlayerState<AAuraPlayerState>();
 	check(AuraPlayerState)

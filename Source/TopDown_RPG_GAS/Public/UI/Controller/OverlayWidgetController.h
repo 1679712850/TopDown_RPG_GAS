@@ -69,6 +69,9 @@ public:
 	
 	UPROPERTY(BlueprintAssignable, Category="Aura|Level")
 	FOnPlayerStatChangedSignature OnPlayerLevelChangedDelegate;
+	
+	UPROPERTY(BlueprintAssignable, Category="Aura|Attributes")
+	FOnPlayerStatChangedSignature AttributePointsChangedDelegate;
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Widget Data")

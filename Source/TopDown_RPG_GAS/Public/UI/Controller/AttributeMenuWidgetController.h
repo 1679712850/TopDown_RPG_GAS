@@ -26,6 +26,9 @@ public:
 	
 	UPROPERTY(BlueprintAssignable, Category="Aura|Attributes")
 	FOnPlayerStatChangedSignature AttributePointsChangedDelegate;
+	
+	UFUNCTION(BlueprintCallable)
+	void UpgradeAttribute(const FGameplayTag& AttributeTag);
 protected:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category="AttributeMenuWidgetController")
 	TObjectPtr<class UAttributeInfoDataAsset> AttributeInfo;

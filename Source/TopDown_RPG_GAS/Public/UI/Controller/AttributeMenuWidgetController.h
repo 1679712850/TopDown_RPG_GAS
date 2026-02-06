@@ -23,6 +23,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FAttributeInfoSignature AttributeInfoDelegate;
+	
+	UPROPERTY(BlueprintAssignable, Category="Aura|Attributes")
+	FOnPlayerStatChangedSignature AttributePointsChangedDelegate;
 protected:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category="AttributeMenuWidgetController")
 	TObjectPtr<class UAttributeInfoDataAsset> AttributeInfo;

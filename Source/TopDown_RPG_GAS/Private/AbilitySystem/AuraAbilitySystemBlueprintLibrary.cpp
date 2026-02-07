@@ -129,6 +129,13 @@ UCharacterClassInfo* UAuraAbilitySystemBlueprintLibrary::GetCharacterClassInfo(c
 	return AuraGameMode->CharacterClassInfo;
 }
 
+UAbilityInfoDataAsset* UAuraAbilitySystemBlueprintLibrary::GetAbilityInfo(const UObject* WorldContextObject)
+{
+	const AAuraGameModeBase* AuraGameMode = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
+	if (AuraGameMode == nullptr) return nullptr;
+	return AuraGameMode->AbilityInfo;
+}
+
 bool UAuraAbilitySystemBlueprintLibrary::IsBlockedHit(const FGameplayEffectContextHandle& EffectContextHandle)
 {
 	if (const FAuraGameplayEffectContext* AuraEffectContext = static_cast<const FAuraGameplayEffectContext*>(EffectContextHandle.Get()))

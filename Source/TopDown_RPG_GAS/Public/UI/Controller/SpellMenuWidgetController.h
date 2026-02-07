@@ -17,4 +17,7 @@ class TOPDOWN_RPG_GAS_API USpellMenuWidgetController : public UOverlayWidgetCont
 public:
 	virtual void BroadcastInitialValues() override;
 	virtual void BindCallbacksToDependencies() override;
+	
+	UPROPERTY(BlueprintAssignable)
+	FOnPlayerStatChangedSignature SpellPointsChanged;
 };

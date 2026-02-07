@@ -11,6 +11,8 @@ class UAuraAbilitySystemComponent;
 DECLARE_MULTICAST_DELEGATE_OneParam(FEffectAssetTags,const FGameplayTagContainer& /* AssetTags */)
 DECLARE_MULTICAST_DELEGATE(FAbilitiesGiven);
 DECLARE_DELEGATE_OneParam(FForEachAbility,const FGameplayAbilitySpec& Spec);
+DECLARE_MULTICAST_DELEGATE_TwoParams(FAbilityStatusChanged, const FGameplayTag& /*AbilityTag*/, const FGameplayTag& /*StatusTag*/)
+
 /**
  * 
  */
@@ -26,6 +28,7 @@ public:
 
 	FEffectAssetTags EffectAssetTags;
 	FAbilitiesGiven OnAbilitiesGivenDelegate;
+	FAbilityStatusChanged AbilityStatusChanged;
 	
 	bool bStartupAbilitiesGiven = false;
 
@@ -51,4 +54,7 @@ public:
 protected:
 	UFUNCTION(Client,Reliable)
 	void ClientOnEffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveGameplayEffectHandle);
+	
+	UFUNCTION(Client, Reliable)
+	void ClientUpdateAbilityStatus(const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag);
 };

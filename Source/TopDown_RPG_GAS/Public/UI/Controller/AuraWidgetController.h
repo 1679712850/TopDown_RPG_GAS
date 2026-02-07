@@ -49,7 +49,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilityInfoSignature, const FAuraAb
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType, Blueprintable)
 class TOPDOWN_RPG_GAS_API UAuraWidgetController : public UObject
 {
 	GENERATED_BODY()

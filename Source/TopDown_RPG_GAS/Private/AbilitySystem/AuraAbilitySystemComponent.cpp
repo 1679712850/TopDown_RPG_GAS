@@ -136,6 +136,38 @@ FGameplayAbilitySpec* UAuraAbilitySystemComponent::GetSpecFromAbilityTag(const F
 	return nullptr;
 }
 
+void UAuraAbilitySystemComponent::ServerSpendSpellPoint_Implementation(const FGameplayTag& AbilityTag)
+{
+	if (FGameplayAbilitySpec* AbilitySpec = GetSpecFromAbilityTag(AbilityTag))
+	{
+		if (GetAvatarActor()->Implements<UPlayerInterface>())
+		{
+			IPlayerInterface::Execute_AddToSpellPoints(GetAvatarActor(), -1);
+		}
+		
+		const FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
+		FGameplayTag Status = GetStatusFromSpec(*AbilitySpec);
+		if (Status.MatchesTagExact(GameplayTags.Abilities_Status_Eligible))
+		{
+			AbilitySpec->GetDynamicSpecSourceTags().RemoveTag(GameplayTags.Abilities_Status_Eligible);
+			AbilitySpec->GetDynamicSpecSourceTags().AddTag(GameplayTags.Abilities_Status_Unlocked);
+			Status = GameplayTags.Abilities_Status_Unlocked;
+		}
+		else if (Status.MatchesTagExact(GameplayTags.Abilities_Status_Equipped) || Status.MatchesTagExact(GameplayTags.Abilities_Status_Unlocked))
+		{
+			AbilitySpec->Level += 1;
+		}
+		ClientUpdateAbilityStatus(AbilityTag, Status, AbilitySpec->Level);
+		MarkAbilitySpecDirty(*AbilitySpec);
+	}
+}
+
+void UAuraAbilitySystemComponent::ClientUpdateAbilityStatus_Implementation(const FGameplayTag& AbilityTag,
+	const FGameplayTag& StatusTag, int32 AbilityLevel)
+{
+	AbilityStatusChanged.Broadcast(AbilityTag, StatusTag,AbilityLevel);
+}
+
 void UAuraAbilitySystemComponent::UpdateAbilityStatuses(int32 Level)
 {
 	auto AbilityInfo = UAuraAbilitySystemBlueprintLibrary::GetAbilityInfo(GetAvatarActor());
@@ -150,15 +182,9 @@ void UAuraAbilitySystemComponent::UpdateAbilityStatuses(int32 Level)
 			GiveAbility(AbilitySpec);
 			MarkAbilitySpecDirty(AbilitySpec);
 			
-			ClientUpdateAbilityStatus(Info.AbilityTag,FAuraGameplayTags::Get().Abilities_Status_Eligible);
+			ClientUpdateAbilityStatus(Info.AbilityTag,FAuraGameplayTags::Get().Abilities_Status_Eligible, 1);
 		}
 	}
-}
-
-void UAuraAbilitySystemComponent::ClientUpdateAbilityStatus_Implementation(const FGameplayTag& AbilityTag,
-	const FGameplayTag& StatusTag)
-{
-	AbilityStatusChanged.Broadcast(AbilityTag, StatusTag);
 }
 
 void UAuraAbilitySystemComponent::OnRep_ActivateAbilities()

@@ -17,4 +17,8 @@ class TOPDOWN_RPG_GAS_API UAuraGameplayAbility : public UGameplayAbility
 public:
 	UPROPERTY(EditAnywhere,Category="Ability")
 	FGameplayTag StartupAbilityTag;
+	
+	virtual FString GetDescription(int32 Level);
+	virtual FString GetNextLevelDescription(int32 Level);
+	static FString GetLockedDescription(int32 Level);
 };

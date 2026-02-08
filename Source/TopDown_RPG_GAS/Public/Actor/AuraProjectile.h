@@ -22,6 +22,12 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, meta = (ExposeOnSpawn = true))
 	FDamageEffectParams DamageEffectParams;
+	
+	UPROPERTY()
+	TObjectPtr<USceneComponent> HomingTargetSceneComponent;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UProjectileMovementComponent> ProjectileMovementComponent;
 
 protected:
 	virtual void BeginPlay() override;
@@ -32,7 +38,7 @@ protected:
 	void OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	                          UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
 	                          const FHitResult& SweepResult);
-private:
+protected:
 	UPROPERTY(EditDefaultsOnly)
 	float LifeSpan = 15.f;
 
@@ -40,9 +46,6 @@ private:
 	
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<USphereComponent> SphereComponent;
-
-	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UProjectileMovementComponent> ProjectileMovementComponent;
 	
 	
 	UPROPERTY(EditAnywhere)

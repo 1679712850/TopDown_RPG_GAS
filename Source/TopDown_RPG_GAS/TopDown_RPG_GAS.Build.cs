@@ -22,7 +22,8 @@ public class TopDown_RPG_GAS : ModuleRules
 			"UMG",
 			"NavigationSystem",
 			"Niagara",
-			"AIModule"
+			"AIModule",
+			"Niagara"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

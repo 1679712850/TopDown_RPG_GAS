@@ -53,6 +53,14 @@ void AAuraPlayerController::PlayerTick(float DeltaTime)
 
 void AAuraPlayerController::CursorTrace()
 {
+	if (GetAuraAbilitySystemComponent() && GetAuraAbilitySystemComponent()->HasMatchingGameplayTag(FAuraGameplayTags::Get().Player_Block_CursorTrace))
+	{
+		if (LastEnemy) LastEnemy->UnHighlight();
+		if (CurrentEnemy) CurrentEnemy->UnHighlight();
+		LastEnemy = nullptr;
+		CurrentEnemy = nullptr;
+		return;
+	}
 	FHitResult CursorHit;
 	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
 	if (!CursorHit.bBlockingHit) return;
@@ -110,6 +118,10 @@ void AAuraPlayerController::CursorTrace()
 
 void AAuraPlayerController::AbilityTagInputPressed(FGameplayTag InputTag)
 {
+	if (GetAuraAbilitySystemComponent() && GetAuraAbilitySystemComponent()->HasMatchingGameplayTag(FAuraGameplayTags::Get().Player_Block_InputPressed))
+	{
+		return;
+	}
 	if (InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
 		bTargeting = CurrentEnemy ? true : false;
@@ -120,6 +132,11 @@ void AAuraPlayerController::AbilityTagInputPressed(FGameplayTag InputTag)
 
 void AAuraPlayerController::AbilityTagInputReleased(FGameplayTag InputTag)
 {
+	
+	if (GetAuraAbilitySystemComponent() && GetAuraAbilitySystemComponent()->HasMatchingGameplayTag(FAuraGameplayTags::Get().Player_Block_InputReleased))
+	{
+		return;
+	}
 	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
 		if (auto AuraASC = GetAuraAbilitySystemComponent())
@@ -154,7 +171,10 @@ void AAuraPlayerController::AbilityTagInputReleased(FGameplayTag InputTag)
 				}
 			}
 		}
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ClickNiagaraSystem, CachedDestination);
+		if (GetAuraAbilitySystemComponent() && !GetAuraAbilitySystemComponent()->HasMatchingGameplayTag(FAuraGameplayTags::Get().Player_Block_InputPressed))
+		{
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ClickNiagaraSystem, CachedDestination);
+		}
 		FollowTime = 0.f;
 	}
 }

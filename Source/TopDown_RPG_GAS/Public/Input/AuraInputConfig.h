@@ -15,10 +15,10 @@ struct FAuraInputAction
 	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly)
-	UInputAction* InputAction;
+	UInputAction* InputAction = nullptr;
 
 	UPROPERTY(EditDefaultsOnly)
-	FGameplayTag InputTag;
+	FGameplayTag InputTag = FGameplayTag();
 };
 
 /**

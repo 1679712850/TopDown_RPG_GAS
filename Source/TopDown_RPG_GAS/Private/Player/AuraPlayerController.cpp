@@ -115,6 +115,7 @@ void AAuraPlayerController::AbilityTagInputPressed(FGameplayTag InputTag)
 		bTargeting = CurrentEnemy ? true : false;
 		bAutoRunning = false;
 	}
+	if (GetAuraAbilitySystemComponent()) GetAuraAbilitySystemComponent()->AbilityInputTagPressed(InputTag);
 }
 
 void AAuraPlayerController::AbilityTagInputReleased(FGameplayTag InputTag)

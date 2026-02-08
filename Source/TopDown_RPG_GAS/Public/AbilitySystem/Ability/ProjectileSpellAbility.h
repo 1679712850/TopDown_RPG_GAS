@@ -16,14 +16,11 @@ class TOPDOWN_RPG_GAS_API UProjectileSpellAbility : public UDamageGameplayAbilit
 {
 	GENERATED_BODY()
 public:
-	virtual FString GetDescription(int32 Level) override;
-	virtual FString GetNextLevelDescription(int32 Level) override;
-	
 	UFUNCTION(BlueprintCallable, Category = "Projectile")
 	void SpawnProjectile(const FVector& TargetLocation, const FGameplayTag& SocketTag, bool bOverridePitch = false, float PitchOverride = 0.f);
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
 
-private:
+protected:
 	UPROPERTY(EditDefaultsOnly)	
 	TSubclassOf<AAuraProjectile> ProjectileClass;
 	

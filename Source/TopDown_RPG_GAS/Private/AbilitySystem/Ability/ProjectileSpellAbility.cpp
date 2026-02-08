@@ -19,7 +19,7 @@ void UProjectileSpellAbility::ActivateAbility(const FGameplayAbilitySpecHandle H
 
 FString UProjectileSpellAbility::GetDescription(int32 Level)
 {
-	const int32 Damage = GetDamageByDamageType(Level, FAuraGameplayTags::Get().Damage_Fire);
+	const int32 ScaledDamage = Damage.GetValueAtLevel(Level);
 	const float ManaCost = FMath::Abs(GetManaCost(Level));
 	const float Cooldown = GetCooldown(Level);
 	if (Level == 1)
@@ -46,7 +46,7 @@ FString UProjectileSpellAbility::GetDescription(int32 Level)
 			Level,
 			ManaCost,
 			Cooldown,
-			Damage);
+			ScaledDamage);
 	}
 	else
 	{
@@ -74,14 +74,14 @@ FString UProjectileSpellAbility::GetDescription(int32 Level)
 			ManaCost,
 			Cooldown,
 			FMath::Min(Level, NumProjectiles),
-			Damage);
+			ScaledDamage);
 		
 	}
 }
 
 FString UProjectileSpellAbility::GetNextLevelDescription(int32 Level)
 {
-	const int32 Damage = GetDamageByDamageType(Level, FAuraGameplayTags::Get().Damage_Fire);
+	const int32 ScaledDamage = Damage.GetValueAtLevel(Level);
 	const float ManaCost = FMath::Abs(GetManaCost(Level));
 	const float Cooldown = GetCooldown(Level);
 	return FString::Printf(TEXT(
@@ -108,7 +108,7 @@ FString UProjectileSpellAbility::GetNextLevelDescription(int32 Level)
 			ManaCost,
 			Cooldown,
 			FMath::Min(Level, NumProjectiles),
-			Damage);
+			ScaledDamage);
 }
 
 void UProjectileSpellAbility::SpawnProjectile(const FVector& TargetLocation, const FGameplayTag& SocketTag, bool bOverridePitch , float PitchOverride)
@@ -144,11 +144,8 @@ void UProjectileSpellAbility::SpawnProjectile(const FVector& TargetLocation, con
 	const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), SourceASC->MakeEffectContext());
 
 	FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
-	for (auto& Pair : DamageTypes)
-	{
-		const float ScaledDamage = Pair.Value.GetValueAtLevel(GetAbilityLevel());
-		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, Pair.Key, ScaledDamage);
-	}
+	const float ScaledDamage = Damage.GetValueAtLevel(GetAbilityLevel());
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, DamageType, ScaledDamage);
 	Projectile->DamageEffectSpecHandle = SpecHandle;
 
 	Projectile->FinishSpawning(SpawnTransform);

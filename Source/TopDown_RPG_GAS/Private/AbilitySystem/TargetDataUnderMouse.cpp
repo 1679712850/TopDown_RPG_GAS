@@ -3,6 +3,7 @@
 
 #include "AbilitySystem/TargetDataUnderMouse.h"
 #include "AbilitySystemComponent.h"
+#include "TopDown_RPG_GAS/TopDown_RPG_GAS.h"
 
 
 UTargetDataUnderMouse* UTargetDataUnderMouse::CreateTargetDataUnderMouse(UGameplayAbility* OwningAbility)
@@ -37,7 +38,7 @@ void UTargetDataUnderMouse::SendMouseCursorData()
 	
 	auto PC = Ability->GetCurrentActorInfo()->PlayerController;
 	FHitResult HitResult;
-	PC->GetHitResultUnderCursor(ECC_Visibility, false , HitResult);
+	PC->GetHitResultUnderCursor(ECC_Target, false , HitResult);
 
 	FGameplayAbilityTargetDataHandle DataHandle;
 	FGameplayAbilityTargetData_SingleTargetHit* TargetData = new FGameplayAbilityTargetData_SingleTargetHit();

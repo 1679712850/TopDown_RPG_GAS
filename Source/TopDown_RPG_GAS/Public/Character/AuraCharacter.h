@@ -41,6 +41,9 @@ public:
 	virtual int32 GetAttributePoints_Implementation() const override;
 	virtual int32 GetSpellPoints_Implementation() const override;
 	/* end Player Interface */
+	
+	virtual void OnRep_Stunned() override;
+	virtual void OnRep_Burned() override;
 private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UCameraComponent> TopDownCameraComponent;

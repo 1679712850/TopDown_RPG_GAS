@@ -45,6 +45,8 @@ AAuraCharacterBase::AAuraCharacterBase()
 	LifeSiphonNiagaraComponent->SetupAttachment(EffectAttachComponent);
 	ManaSiphonNiagaraComponent = CreateDefaultSubobject<UPassiveNiagaraComponent>("ManaSiphonNiagaraComponent");
 	ManaSiphonNiagaraComponent->SetupAttachment(EffectAttachComponent);
+	
+	GetMesh()->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
 }
 
 void AAuraCharacterBase::BeginPlay()

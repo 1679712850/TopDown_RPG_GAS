@@ -44,6 +44,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	float LifeSpan = 15.f;
 
+	bool IsValidOverlap(AActor* OtherActor);
+	
 	bool bHit = false;
 	
 	UPROPERTY(EditDefaultsOnly)

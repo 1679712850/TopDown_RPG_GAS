@@ -17,6 +17,7 @@
 #include "GameFramework/Character.h"
 #include "Input/AuraEnhancedInputComponent.h"
 #include "Interaction/EnemyInterface.h"
+#include "TopDown_RPG_GAS/TopDown_RPG_GAS.h"
 #include "UI/DamageTextComponent.h"
 
 
@@ -92,7 +93,8 @@ void AAuraPlayerController::CursorTrace()
 		CurrentEnemy = nullptr;
 		return;
 	}
-	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
+	const ECollisionChannel TraceChannel = IsValid(MagicCircle) ? ECC_ExcludePlayers : ECC_Visibility;
+	GetHitResultUnderCursor(TraceChannel, false, CursorHit);
 	if (!CursorHit.bBlockingHit) return;
 
 	LastEnemy = CurrentEnemy;

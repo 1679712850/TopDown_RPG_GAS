@@ -38,6 +38,9 @@ public:
 	TEnumAsByte<ESaveSlotStatus> SaveSlotStatus = Vacant;
 	
 	UPROPERTY()
+	bool bFirstTimeLoadIn = true;
+	
+	UPROPERTY()
 	FString MapName = FString("Default Map Name");
 	
 	/* Player */

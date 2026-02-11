@@ -7,6 +7,7 @@
 #include "Engine/DataAsset.h"
 #include "AttributeInfoDataAsset.generated.h"
 
+class UGameplayEffect;
 USTRUCT(BlueprintType)
 struct FAuraAttributeInfo
 {
@@ -35,6 +36,8 @@ class TOPDOWN_RPG_GAS_API UAttributeInfoDataAsset : public UDataAsset
 public:
 	FAuraAttributeInfo FindAttributeInfoForTag(const FGameplayTag& AttributeTag, bool bLogNotFound = false) const;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Common Class Defaults")
+	TSubclassOf<UGameplayEffect> PrimaryAttributes_SetByCaller;
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TArray<FAuraAttributeInfo> AttributeInformation;

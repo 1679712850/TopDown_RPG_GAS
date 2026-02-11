@@ -10,7 +10,7 @@
 class ULevelUpInfoDataAsset;
 class UAttributeSet;
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlayerStatChanged, int32 /*StatValue*/)
-
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnLevelChanged, int32 /*StatValue*/, bool /*bLevelUp*/)
 /**
  * 
  */
@@ -39,7 +39,7 @@ public:
 	void SetAttributePoints(int32 InPoints);
 	void SetSpellPoints(int32 InPoints);
 	
-	FOnPlayerStatChanged OnLevelChangedDelegate;
+	FOnLevelChanged OnLevelChangedDelegate;
 	FOnPlayerStatChanged OnXPChangedDelegate;
 	FOnPlayerStatChanged OnAttributePointsChangedDelegate;
     FOnPlayerStatChanged OnSpellPointsChangedDelegate;

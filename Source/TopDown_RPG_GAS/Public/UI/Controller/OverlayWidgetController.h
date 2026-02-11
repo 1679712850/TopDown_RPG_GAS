@@ -12,6 +12,7 @@
 class UAuraUserWidget;
 struct FOnAttributeChangeData;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnFloatAttributeChangedSignature, float, NewValue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnLevelChangedSignature, int32, NewLevel, bool, bLevelUp);
 
 USTRUCT(BlueprintType)
 struct FUIWidgetData : public FTableRowBase
@@ -63,7 +64,7 @@ public:
 	FOnFloatAttributeChangedSignature OnXPPercentChanged;
 	
 	UPROPERTY(BlueprintAssignable, Category="Aura|Level")
-	FOnPlayerStatChangedSignature OnPlayerLevelChangedDelegate;
+	FOnLevelChangedSignature OnPlayerLevelChangedDelegate;
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Widget Data")

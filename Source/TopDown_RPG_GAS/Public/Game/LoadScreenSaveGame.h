@@ -32,6 +32,9 @@ public:
 	FString PlayerName = FString("Default Name");
 	
 	UPROPERTY()
+	FName PlayerStartTag;
+	
+	UPROPERTY()
 	TEnumAsByte<ESaveSlotStatus> SaveSlotStatus = Vacant;
 	
 	UPROPERTY()

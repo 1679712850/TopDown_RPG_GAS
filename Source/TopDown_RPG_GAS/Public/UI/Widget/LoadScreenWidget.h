@@ -13,4 +13,9 @@ UCLASS()
 class TOPDOWN_RPG_GAS_API ULoadScreenWidget : public UUserWidget
 {
 	GENERATED_BODY()
+	
+public:
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void BlueprintInitializeWidget();
 };

@@ -23,8 +23,8 @@ public:
 	AAuraEnemy();
 	virtual void PossessedBy(AController* NewController) override;
 
-	virtual void Highlight() override;
-	virtual void UnHighlight() override;
+	virtual void HighlightActor_Implementation() override;
+	virtual void UnHighlightActor_Implementation() override;
 	
 	/* Enemy Interface */
 	virtual void SetCombatTarget_Implementation(AActor* InCombatTarget) override;

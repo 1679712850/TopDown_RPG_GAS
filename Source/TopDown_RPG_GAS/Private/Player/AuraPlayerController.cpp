@@ -88,8 +88,10 @@ void AAuraPlayerController::CursorTrace()
 {
 	if (GetAuraAbilitySystemComponent() && GetAuraAbilitySystemComponent()->HasMatchingGameplayTag(FAuraGameplayTags::Get().Player_Block_CursorTrace))
 	{
-		if (LastActor) LastActor->UnHighlight();
-		if (ThisActor) ThisActor->UnHighlight();
+		UnHighlightActor(LastActor);
+		UnHighlightActor(ThisActor);
+		if (IsValid(ThisActor) && ThisActor->Implements<UHighlightInterface>())
+			
 		LastActor = nullptr;
 		ThisActor = nullptr;
 		return;
@@ -99,53 +101,35 @@ void AAuraPlayerController::CursorTrace()
 	if (!CursorHit.bBlockingHit) return;
 
 	LastActor = ThisActor;
-	ThisActor = Cast<IHighlightInterface>(CursorHit.GetActor());
-
-	/*
-	 * Line trace from cursor. There are several scenarios:
-	 * A. LastActor is NULL && ThisActor is NULL
-	 *		- Do nothing
-	 * B. LastActor is NULL && ThisActor is Valid
-	 * 		- Highlight ThisActor
-	 * C. LastActor is Valid && ThisActor is NULL
-	 * 		- Unhighlight LastActor
-	 * D. Both are valid, but LastActor != ThisActor
-	 * 		- Unhighlight LastActor, and Highlight ThisActor
-	 * E. Both are valid, but LastActor == ThisActor
-	 * 		- Do nothing
-	 */
-	if (LastActor == nullptr)
+	if (IsValid(CursorHit.GetActor()) && CursorHit.GetActor()->Implements<UHighlightInterface>())
 	{
-		if (ThisActor != nullptr)
-		{
-			// Case B
-			ThisActor->Highlight();
-		}
-		else
-		{
-			// Case A, do nothing
-		}
+		ThisActor = CursorHit.GetActor();
 	}
 	else
 	{
-		if (ThisActor == nullptr)
-		{
-			// Case C
-			LastActor->UnHighlight();
-		}
-		else
-		{
-			if (LastActor != ThisActor)
-			{
-				// Case D
-				LastActor->UnHighlight();
-				ThisActor->Highlight();
-			}
-			else
-			{
-				// Case E, do nothing
-			}
-		}
+		ThisActor = nullptr;
+	}
+
+	if (LastActor != ThisActor)
+	{
+		UnHighlightActor(LastActor);
+		HighlightActor(ThisActor);
+	}
+}
+
+void AAuraPlayerController::HighlightActor(AActor* InActor)
+{
+	if (IsValid(InActor) && InActor->Implements<UHighlightInterface>())
+	{
+		IHighlightInterface::Execute_HighlightActor(InActor);
+	}
+}
+
+void AAuraPlayerController::UnHighlightActor(AActor* InActor)
+{
+	if (IsValid(InActor) && InActor->Implements<UHighlightInterface>())
+	{
+		IHighlightInterface::Execute_UnHighlightActor(InActor);
 	}
 }
 
@@ -157,8 +141,15 @@ void AAuraPlayerController::AbilityTagInputPressed(FGameplayTag InputTag)
 	}
 	if (InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
-		bTargeting = ThisActor ? true : false;
-		bAutoRunning = false;
+		if (IsValid(ThisActor))
+		{
+			TargetingStatus = ThisActor->Implements<UEnemyInterface>() ? ETargetingStatus::TargetingEnemy : ETargetingStatus::TargetingNonEnemy;
+			bAutoRunning = false;
+		}
+		else
+		{
+			TargetingStatus = ETargetingStatus::NotTargeting;
+		}
 	}
 	if (GetAuraAbilitySystemComponent()) GetAuraAbilitySystemComponent()->AbilityInputTagPressed(InputTag);
 }
@@ -184,7 +175,7 @@ void AAuraPlayerController::AbilityTagInputReleased(FGameplayTag InputTag)
 		GetAuraAbilitySystemComponent()->OnAbilityTagInputReleased(InputTag);
 	}
 
-	if (!bTargeting && !bShiftKeyDown)
+	if (TargetingStatus != ETargetingStatus::TargetingEnemy && !bShiftKeyDown)
 	{
 		auto ControlledPawn = GetPawn();
 		if (FollowTime <= ShortPressThreshold && ControlledPawn)
@@ -209,6 +200,7 @@ void AAuraPlayerController::AbilityTagInputReleased(FGameplayTag InputTag)
 			UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ClickNiagaraSystem, CachedDestination);
 		}
 		FollowTime = 0.f;
+		TargetingStatus = ETargetingStatus::NotTargeting;
 	}
 }
 
@@ -223,7 +215,7 @@ void AAuraPlayerController::AbilityTagInputHeld(FGameplayTag InputTag)
 		return;
 	}
 
-	if (bTargeting)
+	if (TargetingStatus == ETargetingStatus::TargetingEnemy || bShiftKeyDown)
 	{
 		if (auto AuraASC = GetAuraAbilitySystemComponent())
 		{

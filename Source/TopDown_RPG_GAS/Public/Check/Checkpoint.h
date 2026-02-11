@@ -4,13 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerStart.h"
+#include "Interaction/HighlightInterface.h"
 #include "Interaction/SaveInterface.h"
+#include "TopDown_RPG_GAS/TopDown_RPG_GAS.h"
 #include "Checkpoint.generated.h"
 
 class USphereComponent;
 
 UCLASS()
-class TOPDOWN_RPG_GAS_API ACheckpoint : public APlayerStart, public ISaveInterface
+class TOPDOWN_RPG_GAS_API ACheckpoint : public APlayerStart, public ISaveInterface, public IHighlightInterface
 {
 	GENERATED_BODY()
 public:
@@ -34,6 +36,18 @@ protected:
 	void CheckpointReached(UMaterialInstanceDynamic* DynamicMaterialInstance);
 
 	void HandleGlowEffects();
+	
+	/* Highlight Interface */
+	virtual void SetMoveToLocation_Implementation(FVector& OutDestination) override;
+	virtual void HighlightActor_Implementation() override;
+	virtual void UnHighlightActor_Implementation() override;
+	/* Highlight Interface */
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USceneComponent> MoveToComponent;
+	
+	UPROPERTY(EditDefaultsOnly)
+	int32 CustomDepthStencilOverride = CUSTOM_DEPTH_TAN;
 protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)

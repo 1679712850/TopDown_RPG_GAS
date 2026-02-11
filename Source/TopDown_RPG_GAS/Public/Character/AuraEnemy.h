@@ -49,6 +49,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Combat")
 	bool bHitReacting = false;
 
+	void SetLevel(int32 InLevel) { Level = InLevel; }
 protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo() override;
@@ -60,9 +61,6 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UWidgetComponent> HealthBar;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
-	ECharacterClass CharacterClass = ECharacterClass::Warrior;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Combat")
 	float LifeSpan = 5.f;

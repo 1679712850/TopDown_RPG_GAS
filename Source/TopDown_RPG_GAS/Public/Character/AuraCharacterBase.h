@@ -71,6 +71,8 @@ public:
 
 	UFUNCTION()
 	virtual void OnRep_Burned();
+	
+	void SetCharacterClass(ECharacterClass InClass) { CharacterClass = InClass; }
 protected:
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Combat")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
@@ -172,6 +174,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USceneComponent> EffectAttachComponent;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
+	ECharacterClass CharacterClass = ECharacterClass::Warrior;
 };
 
 

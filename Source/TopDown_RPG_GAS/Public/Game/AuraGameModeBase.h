@@ -55,6 +55,7 @@ public:
 	
 	void TravelToMap(UMVVM_LoadSlot* Slot);
 
+	void PlayerDied(ACharacter* DeadCharacter);
 protected:
 	virtual void BeginPlay() override;
 };

@@ -150,6 +150,7 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TObjectPtr<UAnimMontage> HitReactMontage;
 
+	UPROPERTY(BlueprintReadOnly)
 	bool bDead = false;
 
 	UFUNCTION(NetMulticast, Reliable)

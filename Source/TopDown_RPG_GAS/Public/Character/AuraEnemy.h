@@ -6,6 +6,7 @@
 #include "AuraCharacterBase.h"
 #include "Data/CharacterClassInfo.h"
 #include "Interaction/EnemyInterface.h"
+#include "Interaction/HighlightInterface.h"
 #include "UI/Controller/OverlayWidgetController.h"
 #include "AuraEnemy.generated.h"
 
@@ -14,7 +15,7 @@ class UBehaviorTree;
 class UWidgetComponent;
 
 UCLASS()
-class TOPDOWN_RPG_GAS_API AAuraEnemy : public AAuraCharacterBase, public IEnemyInterface
+class TOPDOWN_RPG_GAS_API AAuraEnemy : public AAuraCharacterBase, public IEnemyInterface, public IHighlightInterface
 {
 	GENERATED_BODY()
 
@@ -22,9 +23,10 @@ public:
 	AAuraEnemy();
 	virtual void PossessedBy(AController* NewController) override;
 
-	/* Enemy Interface */
 	virtual void Highlight() override;
 	virtual void UnHighlight() override;
+	
+	/* Enemy Interface */
 	virtual void SetCombatTarget_Implementation(AActor* InCombatTarget) override;
 	virtual AActor* GetCombatTarget_Implementation() const override;
 	/* end Enemy Interface */

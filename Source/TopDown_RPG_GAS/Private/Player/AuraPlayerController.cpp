@@ -17,6 +17,7 @@
 #include "GameFramework/Character.h"
 #include "Input/AuraEnhancedInputComponent.h"
 #include "Interaction/EnemyInterface.h"
+#include "Interaction/HighlightInterface.h"
 #include "TopDown_RPG_GAS/TopDown_RPG_GAS.h"
 #include "UI/DamageTextComponent.h"
 
@@ -87,38 +88,38 @@ void AAuraPlayerController::CursorTrace()
 {
 	if (GetAuraAbilitySystemComponent() && GetAuraAbilitySystemComponent()->HasMatchingGameplayTag(FAuraGameplayTags::Get().Player_Block_CursorTrace))
 	{
-		if (LastEnemy) LastEnemy->UnHighlight();
-		if (CurrentEnemy) CurrentEnemy->UnHighlight();
-		LastEnemy = nullptr;
-		CurrentEnemy = nullptr;
+		if (LastActor) LastActor->UnHighlight();
+		if (ThisActor) ThisActor->UnHighlight();
+		LastActor = nullptr;
+		ThisActor = nullptr;
 		return;
 	}
 	const ECollisionChannel TraceChannel = IsValid(MagicCircle) ? ECC_ExcludePlayers : ECC_Visibility;
 	GetHitResultUnderCursor(TraceChannel, false, CursorHit);
 	if (!CursorHit.bBlockingHit) return;
 
-	LastEnemy = CurrentEnemy;
-	CurrentEnemy = Cast<IEnemyInterface>(CursorHit.GetActor());
+	LastActor = ThisActor;
+	ThisActor = Cast<IHighlightInterface>(CursorHit.GetActor());
 
 	/*
 	 * Line trace from cursor. There are several scenarios:
-	 * A. LastEnemy is NULL && CurrentEnemy is NULL
+	 * A. LastActor is NULL && ThisActor is NULL
 	 *		- Do nothing
-	 * B. LastEnemy is NULL && CurrentEnemy is Valid
-	 * 		- Highlight CurrentEnemy
-	 * C. LastEnemy is Valid && CurrentEnemy is NULL
-	 * 		- Unhighlight LastEnemy
-	 * D. Both are valid, but LastEnemy != CurrentEnemy
-	 * 		- Unhighlight LastEnemy, and Highlight CurrentEnemy
-	 * E. Both are valid, but LastEnemy == CurrentEnemy
+	 * B. LastActor is NULL && ThisActor is Valid
+	 * 		- Highlight ThisActor
+	 * C. LastActor is Valid && ThisActor is NULL
+	 * 		- Unhighlight LastActor
+	 * D. Both are valid, but LastActor != ThisActor
+	 * 		- Unhighlight LastActor, and Highlight ThisActor
+	 * E. Both are valid, but LastActor == ThisActor
 	 * 		- Do nothing
 	 */
-	if (LastEnemy == nullptr)
+	if (LastActor == nullptr)
 	{
-		if (CurrentEnemy != nullptr)
+		if (ThisActor != nullptr)
 		{
 			// Case B
-			CurrentEnemy->Highlight();
+			ThisActor->Highlight();
 		}
 		else
 		{
@@ -127,18 +128,18 @@ void AAuraPlayerController::CursorTrace()
 	}
 	else
 	{
-		if (CurrentEnemy == nullptr)
+		if (ThisActor == nullptr)
 		{
 			// Case C
-			LastEnemy->UnHighlight();
+			LastActor->UnHighlight();
 		}
 		else
 		{
-			if (LastEnemy != CurrentEnemy)
+			if (LastActor != ThisActor)
 			{
 				// Case D
-				LastEnemy->UnHighlight();
-				CurrentEnemy->Highlight();
+				LastActor->UnHighlight();
+				ThisActor->Highlight();
 			}
 			else
 			{
@@ -156,7 +157,7 @@ void AAuraPlayerController::AbilityTagInputPressed(FGameplayTag InputTag)
 	}
 	if (InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
-		bTargeting = CurrentEnemy ? true : false;
+		bTargeting = ThisActor ? true : false;
 		bAutoRunning = false;
 	}
 	if (GetAuraAbilitySystemComponent()) GetAuraAbilitySystemComponent()->AbilityInputTagPressed(InputTag);

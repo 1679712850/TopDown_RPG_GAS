@@ -137,6 +137,13 @@ void UAuraAbilitySystemBlueprintLibrary::InitializeDefaultAttributesFromSaveData
 	ASC->ApplyGameplayEffectSpecToSelf(*VitalAttributesSpecHandle.Data.Get());
 }
 
+ULootTiers* UAuraAbilitySystemBlueprintLibrary::GetLootTiers(const UObject* WorldContextObject)
+{
+	const AAuraGameModeBase* AuraGameMode = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
+	if (AuraGameMode == nullptr) return nullptr;
+	return AuraGameMode->LootTiers;
+}
+
 void UAuraAbilitySystemBlueprintLibrary::GiveStartupAbilities(const UObject* WorldContextObject,
                                                               UAbilitySystemComponent* ASC, ECharacterClass CharacterClass)
 {

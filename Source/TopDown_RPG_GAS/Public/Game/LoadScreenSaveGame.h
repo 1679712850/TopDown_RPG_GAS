@@ -108,6 +108,9 @@ public:
 	UPROPERTY()
 	FString MapName = FString("Default Map Name");
 	
+	UPROPERTY()
+	FString MapAssetName = FString("Default Map Asset Name");
+	
 	/* Player */
 	UPROPERTY()
 	int32 PlayerLevel = 1;

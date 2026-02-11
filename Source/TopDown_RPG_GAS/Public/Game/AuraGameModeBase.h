@@ -42,6 +42,8 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TMap<FString, TSoftObjectPtr<UWorld>> Maps;
 	
+	virtual AActor* ChoosePlayerStart_Implementation(AController* Player) override;
+	
 	void TravelToMap(UMVVM_LoadSlot* Slot);
 
 protected:

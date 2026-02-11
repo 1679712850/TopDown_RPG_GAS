@@ -31,7 +31,7 @@ public:
 	FString LoadSlotName;
 
 	UPROPERTY()
-	FString SlotIndex;
+	int32 SlotIndex;
 	
 	/** Field Notifies */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter);

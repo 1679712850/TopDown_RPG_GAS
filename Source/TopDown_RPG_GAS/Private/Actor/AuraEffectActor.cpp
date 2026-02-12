@@ -5,6 +5,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
+#include "Kismet/KismetMathLibrary.h"
 
 
 class UAttributeSet;
@@ -12,6 +13,40 @@ class UAttributeSet;
 AAuraEffectActor::AAuraEffectActor()
 {
 	SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("SceneComponent")));
+}
+
+void AAuraEffectActor::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	RunningTime += DeltaSeconds;
+	const float SinePeriod = 2 * PI / SinePeriodConstant;
+	if (RunningTime > SinePeriod)
+	{
+		RunningTime = 0.f;
+	}
+	ItemMovement(DeltaSeconds);
+}
+
+void AAuraEffectActor::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	InitialLocation = GetActorLocation();
+	CalculatedLocation = InitialLocation;
+	CalculatedRotation = GetActorRotation();
+}
+
+void AAuraEffectActor::StartSinusoidalMovement()
+{
+	bSinusoidalMovement = true;
+	InitialLocation = GetActorLocation();
+	CalculatedLocation = InitialLocation;
+}
+
+void AAuraEffectActor::StartRotation()
+{
+	bRotates = true;
+	CalculatedRotation = GetActorRotation();
 }
 
 void AAuraEffectActor::OnOverlap(AActor* TargetActor)
@@ -96,5 +131,19 @@ void AAuraEffectActor::ApplyEffectTo(AActor* TargetActor, TSubclassOf<UGameplayE
 	if (bDestroyOnEffectApplication && !bIsInfinite)
 	{
 		Destroy();
+	}
+}
+
+void AAuraEffectActor::ItemMovement(float DeltaTime)
+{
+	if (bRotates)
+	{
+		const FRotator DeltaRotation(0.f, DeltaTime * RotationRate, 0.f);
+		CalculatedRotation = UKismetMathLibrary::ComposeRotators(CalculatedRotation, DeltaRotation);
+	}
+	if (bSinusoidalMovement)
+	{
+		const float Sine = SineAmplitude * FMath::Sin(RunningTime * SinePeriodConstant);
+		CalculatedLocation = InitialLocation + FVector(0.f, 0.f, Sine);
 	}
 }
